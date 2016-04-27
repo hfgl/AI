@@ -11,6 +11,8 @@ import com.google.gson.GsonBuilder;
 
 public class Plans {
 
+	static int counter = 0;
+	
     public static void main(String[] args) 
     {
         
@@ -32,6 +34,21 @@ public class Plans {
         });
         
      
+        post("/plan", (request, response) -> 
+        {
+        	if(request.body() == null){
+        		response.status(405);
+        		return "";
+        	}
+            response.status(200);
+            response.header("Content-Type", "application/json");
+            Gson gson = new GsonBuilder().create();
+            Plan plan = gson.fromJson(request.body(), Plan.class);
+            counter++;
+            plan.setid("" + counter);
+            plans.add(plan);
+            return "";
+        });
 
         post("/plan/:id", (request, response) -> 
         {
@@ -53,20 +70,7 @@ public class Plans {
             response.status(404);
             return "";
         });
-        
-        post("/plan", (request, response) -> 
-        {
-        	if(request.body() == null){
-        		response.status(405);
-        		return "";
-        	}
-            response.status(200);
-            response.header("Content-Type", "application/json");
-            Gson gson = new GsonBuilder().create();
-            Plan plan = gson.fromJson(request.body(), Plan.class);
-            plans.add(plan);
-            return "";
-        });
+       
         
         delete("/plan/:id", (request, response) -> 
         {
