@@ -3,11 +3,11 @@
 public class Plan {
 
 	private String id;
-    private String event;
+    private String content;
 
     public Plan(String event)
     {
-        this.event = event;
+        this.content = event;
     }
 
     public String getid() 
@@ -22,11 +22,11 @@ public class Plan {
 
     public String getevent() 
     {
-        return this.event;
+        return this.content;
     }
 
     public void setevent(String event) 
     {
-        this.event = event;
+        this.content = event;
     }
 }

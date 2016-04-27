@@ -18,6 +18,34 @@ public class Plans {
         
     	ArrayList<Plan> plans = new ArrayList<Plan>();
         
+    	get("/plan", (request, response) -> 
+        {
+            response.status(200);
+            response.header("Content-Type", "application/json");
+            Gson gson = new GsonBuilder().create();
+            return gson.toJson(plans);
+        });
+    	
+        get("/plan/:id", (request, response) -> 
+        {
+        	String result = null;
+            response.header("Content-Type", "application/json");
+            Gson gson = new GsonBuilder().create();
+            for (Plan plan : plans) {
+                if(plan.getid().equals(request.params(":id"))){
+                	result = gson.toJson(plan);
+                }
+            }
+            if(result == null){
+            	response.status(405);
+            }
+            else{
+            	response.status(200);
+            }
+            
+            return result;
+        });
+        
         get("/plan/:id", (request, response) -> 
         {
             
@@ -32,7 +60,6 @@ public class Plans {
             response.status(405);
             return "";
         });
-        
      
         post("/plan", (request, response) -> 
         {
@@ -72,15 +99,17 @@ public class Plans {
         });
        
         
+        
         delete("/plan/:id", (request, response) -> 
         {
-        	if(request.queryParams("id") == null)
+        	if(request.params(":id") == null)
         	{
         		response.status(405);
         		return "";
         	}
+        	
             for (Plan plan: plans){
-                if(plan.getid().equals(request.queryParams("id")))
+                if(plan.getid().equals(request.params(":id")))
                 {
                 	response.status(200);
                     plans.remove(plan);
