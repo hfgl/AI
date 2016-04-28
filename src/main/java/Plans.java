@@ -87,10 +87,16 @@ public class Plans {
             	response.status(405);
             	return "";
             }
-            for (Plan plan : plans) {
+            for(int i = 0; i < plans.size(); i++)
+            {
+            	Plan plan = plans.get(i);
                 if(plan.getid().equals(request.params(":id"))){
                     response.status(200);
-                	plan = newPlan;
+                    
+                    Plan p = gson.fromJson(request.body(), Plan.class);
+                    p.setid("" + (i+1));
+                    plans.remove(i);
+                    plans.add(p);
                 	return "";
                 }
             }
